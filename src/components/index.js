@@ -1,0 +1,1 @@
+export { PhoneNumInput } from './common';
