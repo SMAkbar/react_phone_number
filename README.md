@@ -1,3 +1,6 @@
+# This is intent to apply for Leetcode
+* test test file in present at `src/components/common/PhoneNumInput.test.js`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
