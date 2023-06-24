@@ -1,19 +1,27 @@
 import React from "react";
-import './PhoneNumInput.css';
+import "./PhoneNumInput.css";
 import { useState } from "react";
 
 export const PhoneNumInput = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const handlePhonenNumberChange = (input) => {
     let unformattedString = input.target.value;
+    if (unformattedString.length > 16) {
+      unformattedString = unformattedString
+        .replace(")", "")
+        .replace("(", "")
+        .replace(" ", "")
+        .replace("-", "")
+        .slice(0, 16);
+    }
     const phoneNumber = unformattedString.replace(/\D/g, "");
     if (phoneNumber.length === 0) {
       setPhoneNumber("");
       return;
     }
     const formattedPhoneNumber = phoneNumber.replace(
-      /^(\d{3})(\d{0,3})(\d{0,10})$/,
+      /^(\d{3})(\d{0,3})(\d{0,16})$/,
       function (match, group1, group2, group3) {
         let formattedNumber = "";
         if (group1 && !group2) {
@@ -32,7 +40,7 @@ export const PhoneNumInput = () => {
       }
     );
     if (formattedPhoneNumber) setPhoneNumber(formattedPhoneNumber);
-  }
+  };
 
   return (
     <div className="container text-center">
