@@ -35,19 +35,18 @@ export const PhoneNumInput = () => {
   }
 
   return (
-    <div class="container text-center">
+    <div className="container text-center">
       <input
         type="tel"
         id="phone"
-        maxlength="16"
+        maxLength="16"
         placeholder="mobile number"
-        autocomplete="off"
-        oninput="formatPhoneNumber(this)"
+        autoComplete="off"
         value={phoneNumber}
         onChange={handlePhonenNumberChange}
       />
       <div>
-        <label for="phone">(123) 456-7890</label>
+        <label htmlFor="phone">(123) 456-7890</label>
       </div>
     </div>
   );
