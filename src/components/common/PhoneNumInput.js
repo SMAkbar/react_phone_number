@@ -10,7 +10,7 @@ export const PhoneNumInput = () => {
     let caretPosition = input.target.selectionStart;
     let isBackSpacePressed =
       unformattedString.length < phoneNumber.length &&
-      caretPosition != unformattedString.length;
+      caretPosition !== unformattedString.length;
     if (unformattedString.length > 16) {
       unformattedString = unformattedString
         .replace(")", "")
