@@ -5,8 +5,12 @@ import { useState } from "react";
 export const PhoneNumInput = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const handlePhonenNumberChange = (input) => {
+  const handlePhonenNumberChange = async (input) => {
     let unformattedString = input.target.value;
+    let caretPosition = input.target.selectionStart;
+    let isBackSpacePressed =
+      unformattedString.length < phoneNumber.length &&
+      caretPosition != unformattedString.length;
     if (unformattedString.length > 16) {
       unformattedString = unformattedString
         .replace(")", "")
@@ -15,31 +19,38 @@ export const PhoneNumInput = () => {
         .replace("-", "")
         .slice(0, 16);
     }
-    const phoneNumber = unformattedString.replace(/\D/g, "");
-    if (phoneNumber.length === 0) {
+    if (unformattedString.replace(/\D/g, "").length === 0) {
       setPhoneNumber("");
       return;
     }
-    const formattedPhoneNumber = phoneNumber.replace(
-      /^(\d{3})(\d{0,3})(\d{0,16})$/,
-      function (match, group1, group2, group3) {
-        let formattedNumber = "";
-        if (group1 && !group2) {
-          formattedNumber += `${group1}`;
+    const formattedPhoneNumber = unformattedString
+      .replace(/\D/g, "")
+      .replace(
+        /^(\d{3})(\d{0,3})(\d{0,16})$/,
+        function (match, group1, group2, group3) {
+          let formattedNumber = "";
+          if (group1 && !group2) {
+            formattedNumber += `${group1}`;
+          }
+          if (group1 && group2) {
+            formattedNumber += `(${group1})`;
+          }
+          if (group2) {
+            formattedNumber += ` ${group2}`;
+          }
+          if (group3) {
+            formattedNumber += `-${group3}`;
+          }
+          return formattedNumber;
         }
-        if (group1 && group2) {
-          formattedNumber += `(${group1})`;
-        }
-        if (group2) {
-          formattedNumber += ` ${group2}`;
-        }
-        if (group3) {
-          formattedNumber += `-${group3}`;
-        }
-        return formattedNumber;
+      );
+    if (formattedPhoneNumber) {
+      await setPhoneNumber(formattedPhoneNumber);
+      if (isBackSpacePressed) {
+        input.target.selectionStart = caretPosition;
+        input.target.selectionEnd = input.target.selectionStart;
       }
-    );
-    if (formattedPhoneNumber) setPhoneNumber(formattedPhoneNumber);
+    }
   };
 
   return (
